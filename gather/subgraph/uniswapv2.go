@@ -31,7 +31,7 @@ func GetHotPairs() (pairs []*model.Pair, tokenMap map[string]*model.Token, err e
 {
   pairs(
     first: 1000
-    where: {reserveUSD_gt: "1000000", volumeUSD_gt: "50000"}
+    where: {reserveUSD_gt: "100000", volumeUSD_gt: "10000"}
     orderBy: reserveUSD
     orderDirection: desc
   ) {
