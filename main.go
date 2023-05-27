@@ -1,7 +1,11 @@
 package main
 
-import "analysis/config"
+import (
+	"analysis/biz/hot"
+	"analysis/config"
+)
 
 func main() {
 	config.Init()
+	hot.SyncHotPairs()
 }
