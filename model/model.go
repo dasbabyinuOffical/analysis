@@ -1,9 +1,8 @@
 package model
 
-import "gorm.io/gorm"
+import "time"
 
 type HotToken struct {
-	gorm.Model
 	BurnAmount      string `json:"burn_amount"`
 	Chain           string `json:"chain"`
 	CurrentPriceUsd string `json:"current_price_usd"`
@@ -22,6 +21,7 @@ type HotToken struct {
 	TxAmount24H     string `json:"tx_amount_24h"`
 	TxCount24H      string `json:"tx_count_24h"`
 	TxVolumeU24H    string `json:"tx_volume_u_24h"`
+	CreatedAt       time.Time
 }
 
 func (h *HotToken) TableName() string {

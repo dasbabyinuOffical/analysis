@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Ret struct {
@@ -21,10 +22,26 @@ type Chain string
 const (
 	URL            = "https://api.hserpcvice.com/v1api/v2/discover/token_list?chain=%s&category=hot&pageSize=1000"
 	BSCChain Chain = "bsc"
+	ARBChain Chain = "arbitrum"
+	EthChain Chain = "eth"
 )
 
-func GetHotTokens() (tokens []*model.HotToken, err error) {
-	chain := BSCChain
+var (
+	chains = []Chain{BSCChain, ARBChain, EthChain}
+)
+
+func GetHotTokens() (hotTokens []*model.HotToken, err error) {
+	for _, chain := range chains {
+		tokens, err := getHotTokens(chain)
+		if err != nil {
+			return nil, err
+		}
+		hotTokens = append(hotTokens, tokens...)
+	}
+	return
+}
+
+func getHotTokens(chain Chain) (tokens []*model.HotToken, err error) {
 	host := fmt.Sprintf(URL, chain)
 	resp, err := http.Get(host)
 	if err != nil {
@@ -54,5 +71,14 @@ func GetHotTokens() (tokens []*model.HotToken, err error) {
 	}
 
 	err = json.Unmarshal([]byte(escapeData), &tokens)
+	if err != nil {
+		return
+	}
+
+	now := time.Now()
+	for _, token := range tokens {
+		token.CreatedAt = now
+	}
+
 	return
 }

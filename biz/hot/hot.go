@@ -6,7 +6,7 @@ import (
 	"analysis/model"
 )
 
-func AddHotTokens(tokens []*model.HotToken) (err error) {
+func addHotTokens(tokens []*model.HotToken) (err error) {
 	db := config.ClickDB()
 	err = db.CreateInBatches(tokens, len(tokens)).Error
 	return
@@ -17,7 +17,7 @@ func SyncHotPairs() (err error) {
 	if err != nil {
 		return
 	}
-	err = AddHotTokens(tokens)
+	err = addHotTokens(tokens)
 	if err != nil {
 		return
 	}
