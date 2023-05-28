@@ -42,8 +42,7 @@ func ClickDB() *gorm.DB {
 
 func registerModel() {
 	clickDB.AutoMigrate(
-		&model.Token{},
-		&model.Pair{},
+		&model.HotToken{},
 	)
 }
 

@@ -2,31 +2,22 @@ package hot
 
 import (
 	"analysis/config"
-	"analysis/gather/subgraph"
+	"analysis/gather/ave"
 	"analysis/model"
 )
 
-func AddHotPairs(pairs []*model.Pair) (err error) {
+func AddHotTokens(tokens []*model.HotToken) (err error) {
 	db := config.ClickDB()
-	err = db.CreateInBatches(pairs, len(pairs)).Error
-	return
-}
-
-func AddTokens(tokenMap map[string]*model.Token) (err error) {
+	err = db.CreateInBatches(tokens, len(tokens)).Error
 	return
 }
 
 func SyncHotPairs() (err error) {
-	pairs, tokenMap, err := subgraph.GetHotPairs()
+	tokens, err := ave.GetHotTokens()
 	if err != nil {
 		return
 	}
-	err = AddHotPairs(pairs)
-	if err != nil {
-		return
-	}
-
-	err = AddTokens(tokenMap)
+	err = AddHotTokens(tokens)
 	if err != nil {
 		return
 	}
